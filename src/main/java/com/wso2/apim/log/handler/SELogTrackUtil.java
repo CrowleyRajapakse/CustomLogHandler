@@ -17,7 +17,7 @@ public class SELogTrackUtil {
 
     // The HTTP header key name which holds the tracking id value.
 
-    public static final String TRACKING_ID = "X-SE-IFW-RequestId";
+    public static final String TRACKING_ID = "RequestId";
 
     //Key value to hold "to" address of the service.
 
