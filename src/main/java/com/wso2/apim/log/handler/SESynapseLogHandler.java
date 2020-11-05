@@ -11,6 +11,7 @@ import org.apache.synapse.rest.RESTConstants;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 public class SESynapseLogHandler extends AbstractSynapseHandler {
 
@@ -92,6 +93,7 @@ public class SESynapseLogHandler extends AbstractSynapseHandler {
                 serviceTime = responseTime;
             }
 
+            String CORRELATION_ID = UUID.randomUUID().toString();
             String API_NAME = (String) synCtx.getProperty(RESTConstants.SYNAPSE_REST_API);
             String HTTP_METHOD = (String) synCtx.getProperty(Constants.Configuration.HTTP_METHOD);
             String CONTEXT = (String) synCtx.getProperty(RESTConstants.REST_API_CONTEXT);
@@ -101,9 +103,9 @@ public class SESynapseLogHandler extends AbstractSynapseHandler {
             String ERROR_CODE = String.valueOf(synCtx.getProperty(SynapseConstants.ERROR_CODE));
             String ERROR_MESSAGE = (String) synCtx.getProperty(SynapseConstants.ERROR_MESSAGE);
 
-            log.auditLog("API Transaction Details:"
-                    + "SERVICE_NAME: " + API_NAME + ",HTTP_METHOD: " + HTTP_METHOD + ", CONTEXT: " + CONTEXT +
-                    ",FULL_REQUEST_PATH" + FULL_REQUEST_PATH + ",SUB_PATH: " + SUB_PATH +
+            log.auditLog("CORRELATION_ID: " + CORRELATION_ID
+                    + ", API_NAME: " + API_NAME + ", HTTP_METHOD: " + HTTP_METHOD + ", CONTEXT: " + CONTEXT +
+                    ", FULL_REQUEST_PATH" + FULL_REQUEST_PATH + ", SUB_PATH: " + SUB_PATH +
                     ", HTTP_RESPONSE_STATUS_CODE: " + HTTP_RESPONSE_STATUS_CODE + ", REQUEST_START_TIME: "+ startTimeFormatted
                     + ", RESPONSE_END_TIME: " + endTimeFormatted + ", REQUEST_DURATION: " + responseTime +
                     ", BACKEND_TIME: " + backendTime + ", SERVICE_TIME: " + serviceTime +
