@@ -8,10 +8,11 @@ import org.apache.synapse.MessageContext;
 import org.apache.synapse.SynapseConstants;
 import org.apache.synapse.SynapseLog;
 import org.apache.synapse.rest.RESTConstants;
+import org.wso2.carbon.apimgt.impl.APIConstants;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.UUID;
 
 public class SESynapseLogHandler extends AbstractSynapseHandler {
 
@@ -93,9 +94,10 @@ public class SESynapseLogHandler extends AbstractSynapseHandler {
                 serviceTime = responseTime;
             }
 
-            String CORRELATION_ID = UUID.randomUUID().toString();
+            String CORRELATION_ID = (String) synCtx.getProperty(SELogTrackUtil.TRACKING_ID);
+            String PROTOCOL = (String) synCtx.getProperty(SynapseConstants.TRANSPORT_IN_NAME);
             String API_NAME = (String) synCtx.getProperty(RESTConstants.SYNAPSE_REST_API);
-            String HTTP_METHOD = (String) synCtx.getProperty(Constants.Configuration.HTTP_METHOD);
+            String HTTP_METHOD = (String) synCtx.getProperty(APIConstants.CORSHeaders.ACCESS_CONTROL_ALLOW_METHODS);
             String CONTEXT = (String) synCtx.getProperty(RESTConstants.REST_API_CONTEXT);
             String FULL_REQUEST_PATH = (String) synCtx.getProperty(RESTConstants.REST_FULL_REQUEST_PATH);
             String SUB_PATH = (String) synCtx.getProperty(RESTConstants.REST_SUB_REQUEST_PATH);
@@ -103,7 +105,7 @@ public class SESynapseLogHandler extends AbstractSynapseHandler {
             String ERROR_CODE = String.valueOf(synCtx.getProperty(SynapseConstants.ERROR_CODE));
             String ERROR_MESSAGE = (String) synCtx.getProperty(SynapseConstants.ERROR_MESSAGE);
 
-            log.auditLog("CORRELATION_ID: " + CORRELATION_ID
+            log.auditLog("CORRELATION_ID: " + CORRELATION_ID + ", PROTOCOL: " + PROTOCOL
                     + ", API_NAME: " + API_NAME + ", HTTP_METHOD: " + HTTP_METHOD + ", CONTEXT: " + CONTEXT +
                     ", FULL_REQUEST_PATH" + FULL_REQUEST_PATH + ", SUB_PATH: " + SUB_PATH +
                     ", HTTP_RESPONSE_STATUS_CODE: " + HTTP_RESPONSE_STATUS_CODE + ", REQUEST_START_TIME: "+ startTimeFormatted
